@@ -151,20 +151,27 @@ function aplicarComando() {
 
     try {
         // Aplicar o comando
-        const propriedades = comando.split(';').filter(Boolean);
+        const propriedades = comando.split(';').filter(p => p.trim());
         
         propriedades.forEach(prop => {
-            const [chave, valor] = prop.split(':').map(item => item.trim());
+            let [chave, valor] = prop.split(':').map(item => item.trim());
             if (chave && valor) {
-                // Converter para camelCase se necessário
-                let chaveCamel = chave;
-                if (chave.includes('-')) {
-                    chaveCamel = chave.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-                }
+                // Remover ponto-e-vírgula final se existir
+                valor = valor.replace(/;$/, '');
                 
-                // Aplicar ao container ou aos itens conforme a propriedade
-                if (chaveCamel.startsWith('flex') || chaveCamel === 'order' || chaveCamel === 'alignSelf') {
-                    // Aplicar a todos os blocos (poderia ser modificado para seleção específica)
+                // Converter para camelCase se necessário
+                let chaveCamel = chave.includes('-') 
+                    ? chave.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
+                    : chave;
+
+                // Determinar se é propriedade de item ou container
+                const propriedadesDeItem = [
+                    'order', 'flexGrow', 'flexShrink', 'flexBasis', 
+                    'flex', 'alignSelf'
+                ];
+                
+                if (propriedadesDeItem.includes(chaveCamel)) {
+                    // Aplicar a todos os blocos
                     document.querySelectorAll('.bloco').forEach(bloco => {
                         bloco.style[chaveCamel] = valor;
                     });
@@ -182,11 +189,11 @@ function aplicarComando() {
             document.getElementById('proximo-nivel').classList.remove('hidden');
             blocosContainer.classList.add('success-animation');
         } else {
-            mostrarFeedback('info', 'Comando válido, mas não resolve o nível. Tente outro!', 3000);
+            mostrarFeedback('info', 'Comando aplicado com sucesso, mas não resolve o nível atual. Tente outro comando!', 3000);
             document.getElementById('proximo-nivel').classList.add('hidden');
         }
     } catch (e) {
-        mostrarFeedback('error', 'Erro ao aplicar o comando. Verifique a sintaxe.', 3000);
+        mostrarFeedback('error', `Erro ao aplicar o comando: ${e.message}`, 3000);
         console.error(e);
     }
 }
@@ -206,15 +213,47 @@ document.getElementById('proximo-nivel').addEventListener('click', () => {
 });
 
 function verificarObjetivo(blocosContainer, desafio) {
+    const estiloComputado = window.getComputedStyle(blocosContainer);
+    let todosItensCorretos = true;
+
+    // Verificar propriedades do container
     for (let key in desafio.flexProperties) {
-        let estiloAplicado = blocosContainer.style[key];
         let estiloEsperado = desafio.flexProperties[key];
-        
-        if (estiloAplicado !== estiloEsperado) {
-            return false;
+        let estiloAplicado;
+
+        // Verifica se é propriedade de item (aplicada nos blocos)
+        if (['order', 'flexGrow', 'flexShrink', 'flexBasis', 'flex', 'alignSelf'].includes(key)) {
+            // Verifica em todos os blocos
+            const blocos = document.querySelectorAll('.bloco');
+            blocos.forEach(bloco => {
+                const estiloBloco = window.getComputedStyle(bloco);
+                estiloAplicado = bloco.style[key] || estiloBloco.getPropertyValue(
+                    key.replace(/([A-Z])/g, '-$1').toLowerCase()
+                );
+                
+                if (estiloAplicado != estiloEsperado) {
+                    todosItensCorretos = false;
+                }
+            });
+        } else {
+            // Propriedade do container
+            estiloAplicado = blocosContainer.style[key] || 
+                            estiloComputado.getPropertyValue(
+                                key.replace(/([A-Z])/g, '-$1').toLowerCase()
+                            );
+            
+            // Correção para valores vazios/null/undefined
+            if (estiloAplicado === '' || estiloAplicado === null || estiloAplicado === undefined) {
+                estiloAplicado = 'unset';
+            }
+
+            if (estiloAplicado != estiloEsperado) {
+                return false;
+            }
         }
     }
-    return true;
+
+    return todosItensCorretos;
 }
 
 function mostrarFeedback(tipo, mensagem, tempo) {
@@ -284,67 +323,69 @@ function validarComandoFlexbox(comando) {
     
     // Verificar se o comando está vazio
     if (!comando.trim()) {
-        input.classList.add('input-invalido');
-        erro.textContent = 'Por favor, digite um comando CSS';
-        erro.style.display = 'block';
+        mostrarErro(input, erro, 'Por favor, digite um comando CSS');
         return false;
     }
     
-    // Verificar formato básico (deve conter :)
-    if (!comando.includes(':')) {
-        input.classList.add('input-invalido');
-        erro.textContent = 'Formato inválido. Use: propriedade: valor;';
-        erro.style.display = 'block';
-        return false;
-    }
+    // Verificar cada propriedade separadamente
+    const propriedades = comando.split(';').filter(p => p.trim());
     
-    // Extrair propriedade e valor
-    const [prop, ...valores] = comando.split(':');
-    const propriedade = prop.trim().toLowerCase();
-    const valor = valores.join(':').replace(/;$/, '').trim();
-    
-    // Verificar se a propriedade é válida
-    if (!propriedadesValidas.hasOwnProperty(propriedade)) {
-        // Tentar converter camelCase para kebab-case
-        const propriedadeKebab = propriedade.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-        
-        if (!propriedadesValidas.hasOwnProperty(propriedadeKebab)) {
-            input.classList.add('input-invalido');
-            erro.textContent = `Propriedade "${propriedade}" não é válida para Flexbox`;
-            erro.style.display = 'block';
+    for (const prop of propriedades) {
+        if (!prop.includes(':')) {
+            mostrarErro(input, erro, `Formato inválido em "${prop}". Use: propriedade: valor`);
             return false;
         }
-    }
-    
-    // Verificar valores para propriedades com valores específicos
-    const propriedadeReal = propriedadesValidas.hasOwnProperty(propriedade) ? propriedade : propriedadeKebab;
-    
-    if (propriedadesValidas[propriedadeReal].length > 0 && 
-        !propriedadesValidas[propriedadeReal].includes(valor)) {
-        input.classList.add('input-invalido');
-        erro.textContent = `Valor "${valor}" inválido para ${propriedadeReal}. Valores aceitos: ${propriedadesValidas[propriedadeReal].join(', ')}`;
-        erro.style.display = 'block';
-        return false;
-    }
-    
-    // Validações específicas para certas propriedades
-    if (propriedadeReal === 'order' && isNaN(parseInt(valor))) {
-        input.classList.add('input-invalido');
-        erro.textContent = 'O valor de "order" deve ser um número inteiro';
-        erro.style.display = 'block';
-        return false;
-    }
-    
-    if ((propriedadeReal === 'flex-grow' || propriedadeReal === 'flex-shrink') && isNaN(parseFloat(valor))) {
-        input.classList.add('input-invalido');
-        erro.textContent = `O valor de "${propriedadeReal}" deve ser um número`;
-        erro.style.display = 'block';
-        return false;
+        
+        let [chave, valor] = prop.split(':').map(item => item.trim());
+        valor = valor.replace(/;$/, '');
+        
+        if (!chave || !valor) {
+            mostrarErro(input, erro, `Formato inválido em "${prop}". Use: propriedade: valor`);
+            return false;
+        }
+        
+        // Converter para kebab-case para validação
+        const chaveKebab = chave.replace(/([A-Z])/g, '-$1').toLowerCase();
+        const propriedadeValida = Object.keys(propriedadesValidas).find(
+            p => p.toLowerCase() === chaveKebab.toLowerCase()
+        );
+        
+        if (!propriedadeValida) {
+            mostrarErro(input, erro, `Propriedade "${chave}" inválida para Flexbox`);
+            return false;
+        }
+        
+        // Verificar valores específicos
+        if (propriedadesValidas[propriedadeValida].length > 0 && 
+            !propriedadesValidas[propriedadeValida].includes(valor)) {
+            mostrarErro(input, erro, 
+                `Valor "${valor}" inválido para ${propriedadeValida}. ` +
+                `Valores aceitos: ${propriedadesValidas[propriedadeValida].join(', ')}`);
+            return false;
+        }
+        
+        // Validações específicas
+        if (propriedadeValida === 'order' && !/^\d+$/.test(valor)) {
+            mostrarErro(input, erro, 'O valor de "order" deve ser um número inteiro');
+            return false;
+        }
+        
+        if ((propriedadeValida === 'flex-grow' || propriedadeValida === 'flex-shrink') && 
+            isNaN(parseFloat(valor))) {
+            mostrarErro(input, erro, `O valor de "${propriedadeValida}" deve ser um número`);
+            return false;
+        }
     }
     
     // Se passou por todas as validações
     input.classList.add('input-valido');
     return true;
+}
+
+function mostrarErro(input, elementoErro, mensagem) {
+    input.classList.add('input-invalido');
+    elementoErro.textContent = mensagem;
+    elementoErro.style.display = 'block';
 }
 
 document.getElementById('comando').addEventListener('input', function() {
