@@ -14,15 +14,21 @@
     
     <div id="jogo" class="tela">
         <h2 id="objetivo"></h2>
+        <div id="dica-container" class="hidden">
+            <h3>Dica:</h3>
+            <p id="texto-dica"></p>
+        </div>
         <div id="nivel-atual"></div>
         <div id="blocos-container"></div>
         
         <input type="text" id="comando" placeholder="Digite um comando Flexbox">
+        <div id="erro-sintaxe"></div>
         <button id="aplicar-comando">Aplicar Comando</button>
         
-        <div id="exemplo-comando" class="exemplo">Exemplo de comando: justify-content: center;</div> <!-- Exemplo de comando -->
+        <div id="exemplo-comando" class="exemplo">Exemplo de comando: justify-content: center;</div>
         
         <button id="proximo-nivel" class="hidden">Próximo Nível</button>
+        <button id="toggle-dica" class="hidden">Mostrar Dica</button>
     </div>
 
     <script src="script.js"></script>

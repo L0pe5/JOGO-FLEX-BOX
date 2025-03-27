@@ -1,36 +1,60 @@
 document.getElementById('comecar').addEventListener('click', iniciarJogo);
 
 let desafios = [
-    { nivel: 1, objetivo: "Centralize os blocos.", flexProperties: { justifyContent: 'center', alignItems: 'center' }, exemplo: "justify-content: center;" },
-    { nivel: 2, objetivo: "Espalhe os blocos igualmente.", flexProperties: { justifyContent: 'space-around' }, exemplo: "justify-content: space-around;" },
-    { nivel: 3, objetivo: "Aproxime os blocos nos extremos.", flexProperties: { justifyContent: 'space-between' }, exemplo: "justify-content: space-between;" },
-    { nivel: 4, objetivo: "Alinhe os blocos à esquerda.", flexProperties: { justifyContent: 'flex-start' }, exemplo: "justify-content: flex-start;" },
-    { nivel: 5, objetivo: "Coloque os blocos na vertical.", flexProperties: { flexDirection: 'column' }, exemplo: "flex-direction: column;" },
-    { nivel: 6, objetivo: "Inverta a ordem dos blocos.", flexProperties: { flexDirection: 'column-reverse' }, exemplo: "flex-direction: column-reverse;" },
+    { 
+        nivel: 1, 
+        objetivo: "Centralize os blocos.", 
+        flexProperties: { justifyContent: 'center', alignItems: 'center' },
+        dica: "Use 'justify-content: center;' para alinhar horizontalmente e 'align-items: center;' para alinhar verticalmente.",
+        exemplo: "justify-content: center; align-items: center;"
+    },
+    { 
+        nivel: 2, 
+        objetivo: "Espalhe os blocos igualmente.", 
+        flexProperties: { justifyContent: 'space-around' },
+        dica: "Use 'justify-content: space-around;' para distribuir os itens com espaço igual ao redor deles.",
+        exemplo: "justify-content: space-around;"
+    },
+    { 
+        nivel: 3, 
+        objetivo: "Aproxime os blocos nos extremos.", 
+        flexProperties: { justifyContent: 'space-between' },
+        dica: "Use 'justify-content: space-between;' para colocar o primeiro item no início e o último no final, com espaço igual entre os outros.",
+        exemplo: "justify-content: space-between;"
+    },
+    { 
+        nivel: 4, 
+        objetivo: "Alinhe os blocos à esquerda.", 
+        flexProperties: { justifyContent: 'flex-start' },
+        dica: "Use 'justify-content: flex-start;' para alinhar todos os itens no início do container.",
+        exemplo: "justify-content: flex-start;"
+    },
+    { nivel: 5, objetivo: "Coloque os blocos na vertical.", flexProperties: { flexDirection: 'column' } },
+    { nivel: 6, objetivo: "Inverta a ordem dos blocos.", flexProperties: { flexDirection: 'column-reverse' } },
     { nivel: 7, objetivo: "Permita que os blocos quebrem linha.", flexProperties: { flexWrap: 'wrap' } },
     { nivel: 8, objetivo: "Aumente o espaçamento entre os blocos.", flexProperties: { justifyContent: 'space-evenly' } },
     { nivel: 9, objetivo: "Alinhe os blocos na parte inferior.", flexProperties: { alignItems: 'flex-end' } },
     { nivel: 10, objetivo: "Coloque os blocos no centro em coluna.", flexProperties: { flexDirection: 'column', justifyContent: 'center', alignItems: 'center' } },
-    { nivel: 11, objetivo: "Centralize os blocos.", flexProperties: { justifyContent: 'center', alignItems: 'center' } },
-    { nivel: 12, objetivo: "Espalhe os blocos igualmente.", flexProperties: { justifyContent: 'space-around' } },
-    { nivel: 13, objetivo: "Aproxime os blocos nos extremos.", flexProperties: { justifyContent: 'space-between' } },
-    { nivel: 14, objetivo: "Alinhe os blocos à esquerda.", flexProperties: { justifyContent: 'flex-start' } },
-    { nivel: 15, objetivo: "Coloque os blocos na vertical.", flexProperties: { flexDirection: 'column' } },
-    { nivel: 16, objetivo: "Inverta a ordem dos blocos.", flexProperties: { flexDirection: 'column-reverse' } },
-    { nivel: 17, objetivo: "Permita que os blocos quebrem linha.", flexProperties: { flexWrap: 'wrap' } },
-    { nivel: 18, objetivo: "Aumente o espaçamento entre os blocos.", flexProperties: { justifyContent: 'space-evenly' } },
-    { nivel: 19, objetivo: "Alinhe os blocos na parte inferior.", flexProperties: { alignItems: 'flex-end' } },
-    { nivel: 20, objetivo: "Coloque os blocos no centro em coluna.", flexProperties: { flexDirection: 'column', justifyContent: 'center', alignItems: 'center' } },
-    { nivel: 21, objetivo: "Centralize os blocos.", flexProperties: { justifyContent: 'center', alignItems: 'center' } },
-    { nivel: 22, objetivo: "Espalhe os blocos igualmente.", flexProperties: { justifyContent: 'space-around' } },
-    { nivel: 23, objetivo: "Aproxime os blocos nos extremos.", flexProperties: { justifyContent: 'space-between' } },
-    { nivel: 24, objetivo: "Alinhe os blocos à esquerda.", flexProperties: { justifyContent: 'flex-start' } },
-    { nivel: 25, objetivo: "Coloque os blocos na vertical.", flexProperties: { flexDirection: 'column' } },
-    { nivel: 26, objetivo: "Inverta a ordem dos blocos.", flexProperties: { flexDirection: 'column-reverse' } },
-    { nivel: 27, objetivo: "Permita que os blocos quebrem linha.", flexProperties: { flexWrap: 'wrap' } },
-    { nivel: 28, objetivo: "Aumente o espaçamento entre os blocos.", flexProperties: { justifyContent: 'space-evenly' } },
-    { nivel: 29, objetivo: "Alinhe os blocos na parte inferior.", flexProperties: { alignItems: 'flex-end' } },
-    { nivel: 30, objetivo: "Coloque os blocos no centro em coluna.", flexProperties: { flexDirection: 'column', justifyContent: 'center', alignItems: 'center' } }
+    { nivel: 11, objetivo: "Alinhe os blocos no canto direito.", flexProperties: { justifyContent: 'flex-end' } },
+    { nivel: 12, objetivo: "Inverta a direção em linha.", flexProperties: { flexDirection: 'row-reverse' } },
+    { nivel: 13, objetivo: "Distribua os blocos uniformemente na horizontal.", flexProperties: { justifyContent: 'space-evenly' } },
+    { nivel: 14, objetivo: "Alinhe os blocos ao topo.", flexProperties: { alignItems: 'flex-start' } },
+    { nivel: 15, objetivo: "Centralize os blocos apenas horizontalmente.", flexProperties: { justifyContent: 'center' } },
+    { nivel: 16, objetivo: "Permita que os blocos quebrem linha e alinhe ao topo.", flexProperties: { flexWrap: 'wrap', alignItems: 'flex-start' } },
+    { nivel: 17, objetivo: "Espalhe os blocos verticalmente.", flexProperties: { flexDirection: 'column', justifyContent: 'space-around' } },
+    { nivel: 18, objetivo: "Alinhe ao final e distribua igualmente.", flexProperties: { justifyContent: 'space-between', alignItems: 'flex-end' } },
+    { nivel: 19, objetivo: "Coloque em coluna e alinhe à direita.", flexProperties: { flexDirection: 'column', alignItems: 'flex-end' } },
+    { nivel: 20, objetivo: "Ajuste os blocos para preencher o espaço disponível.", flexProperties: { flexGrow: '1' } },
+    { nivel: 21, objetivo: "Use flex-shrink para diminuir o tamanho dos blocos.", flexProperties: { flexShrink: '1' } },
+    { nivel: 22, objetivo: "Aplique flex-basis para definir tamanhos iniciais.", flexProperties: { flexBasis: '50px' } },
+    { nivel: 23, objetivo: "Altere a ordem dos blocos.", flexProperties: { order: '-1' } },
+    { nivel: 24, objetivo: "Use align-self para alinhar um bloco específico.", flexProperties: { alignSelf: 'center' } },
+    { nivel: 25, objetivo: "Ajuste o tamanho dos blocos proporcionalmente.", flexProperties: { flex: '1' } },
+    { nivel: 26, objetivo: "Coloque um bloco maior que os outros.", flexProperties: { flexGrow: '2' } },
+    { nivel: 27, objetivo: "Distribua o espaço igualmente em coluna.", flexProperties: { flexDirection: 'column', justifyContent: 'space-evenly' } },
+    { nivel: 28, objetivo: "Ajuste os blocos para que se expandam e encolham igualmente.", flexProperties: { flex: '1 1 auto' } },
+    { nivel: 29, objetivo: "Crie um layout responsivo com blocos de tamanho variável.", flexProperties: { flex: '1 1 100px' } },
+    { nivel: 30, objetivo: "Aplique todas as propriedades corretamente!", flexProperties: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' } }
 ];
 
 let nivelAtual = 1;
@@ -75,6 +99,31 @@ function carregarNivel(nivel) {
     // Esconder o botão de próximo nível
     document.getElementById('proximo-nivel').classList.add('hidden');
 
+    // Configurar dicas para os primeiros níveis
+    const dicaContainer = document.getElementById('dica-container');
+    const textoDica = document.getElementById('texto-dica');
+    const toggleDicaBtn = document.getElementById('toggle-dica');
+
+    if (nivel <= 4) {
+        textoDica.textContent = desafio.dica;
+        toggleDicaBtn.classList.remove('hidden');
+        dicaContainer.classList.add('hidden');
+        
+        // Configurar o botão de toggle
+        toggleDicaBtn.onclick = function() {
+            if (dicaContainer.classList.contains('hidden')) {
+                dicaContainer.classList.remove('hidden');
+                toggleDicaBtn.textContent = 'Ocultar Dica';
+            } else {
+                dicaContainer.classList.add('hidden');
+                toggleDicaBtn.textContent = 'Mostrar Dica';
+            }
+        };
+    } else {
+        dicaContainer.classList.add('hidden');
+        toggleDicaBtn.classList.add('hidden');
+    }
+
     // Exibir o exemplo de comando para os primeiros níveis
     if (nivel <= 3) {
         document.getElementById('exemplo-comando').style.display = 'block';
@@ -87,29 +136,42 @@ function carregarNivel(nivel) {
 document.getElementById('aplicar-comando').addEventListener('click', aplicarComando);
 
 function aplicarComando() {
-    let comando = document.getElementById('comando').value.trim();
-    let blocosContainer = document.getElementById('blocos-container');
-    let desafio = desafios.find(d => d.nivel === nivelAtual);
+    const comando = document.getElementById('comando').value.trim();
+    const blocosContainer = document.getElementById('blocos-container');
+    const desafio = desafios.find(d => d.nivel === nivelAtual);
 
     if (!desafio) return;
 
     limparFeedback();
 
+    // Validar o comando antes de aplicar
+    if (!validarComandoFlexbox(comando)) {
+        return;
+    }
+
     try {
         // Aplicar o comando
-        let propriedades = comando.split(";");
+        const propriedades = comando.split(';').filter(Boolean);
+        
         propriedades.forEach(prop => {
-            let [chave, valor] = prop.split(":");
+            const [chave, valor] = prop.split(':').map(item => item.trim());
             if (chave && valor) {
-                chave = chave.trim();
-                valor = valor.trim();
-                
-                // Converter propriedades CSS para camelCase
+                // Converter para camelCase se necessário
+                let chaveCamel = chave;
                 if (chave.includes('-')) {
-                    chave = chave.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+                    chaveCamel = chave.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
                 }
                 
-                blocosContainer.style[chave] = valor;
+                // Aplicar ao container ou aos itens conforme a propriedade
+                if (chaveCamel.startsWith('flex') || chaveCamel === 'order' || chaveCamel === 'alignSelf') {
+                    // Aplicar a todos os blocos (poderia ser modificado para seleção específica)
+                    document.querySelectorAll('.bloco').forEach(bloco => {
+                        bloco.style[chaveCamel] = valor;
+                    });
+                } else {
+                    // Aplicar ao container
+                    blocosContainer.style[chaveCamel] = valor;
+                }
             }
         });
 
@@ -120,7 +182,7 @@ function aplicarComando() {
             document.getElementById('proximo-nivel').classList.remove('hidden');
             blocosContainer.classList.add('success-animation');
         } else {
-            mostrarFeedback('error', 'O comando não corresponde ao objetivo do nível. Tente novamente!', 3000);
+            mostrarFeedback('info', 'Comando válido, mas não resolve o nível. Tente outro!', 3000);
             document.getElementById('proximo-nivel').classList.add('hidden');
         }
     } catch (e) {
@@ -191,3 +253,105 @@ function limparFeedback() {
     }
     document.getElementById('blocos-container').classList.remove('success-animation');
 }
+
+// Lista de propriedades Flexbox válidas
+const propriedadesValidas = {
+    // Container
+    'justify-content': ['flex-start', 'flex-end', 'center', 'space-between', 'space-around', 'space-evenly'],
+    'align-items': ['flex-start', 'flex-end', 'center', 'baseline', 'stretch'],
+    'flex-direction': ['row', 'row-reverse', 'column', 'column-reverse'],
+    'flex-wrap': ['nowrap', 'wrap', 'wrap-reverse'],
+    'align-content': ['flex-start', 'flex-end', 'center', 'space-between', 'space-around', 'stretch'],
+    'flex-flow': [], // Combinação de direction e wrap
+    'gap': [], // Valores em px, em, etc.
+    
+    // Itens
+    'order': [], // Números inteiros
+    'flex-grow': [], // Números
+    'flex-shrink': [], // Números
+    'flex-basis': [], // Tamanhos como 'auto', 'content', '100px', '50%'
+    'flex': [], // Shorthand para grow, shrink, basis
+    'align-self': ['auto', 'flex-start', 'flex-end', 'center', 'baseline', 'stretch']
+};
+
+function validarComandoFlexbox(comando) {
+    const input = document.getElementById('comando');
+    const erro = document.getElementById('erro-sintaxe');
+    
+    // Resetar estados
+    input.classList.remove('input-invalido', 'input-valido');
+    erro.style.display = 'none';
+    
+    // Verificar se o comando está vazio
+    if (!comando.trim()) {
+        input.classList.add('input-invalido');
+        erro.textContent = 'Por favor, digite um comando CSS';
+        erro.style.display = 'block';
+        return false;
+    }
+    
+    // Verificar formato básico (deve conter :)
+    if (!comando.includes(':')) {
+        input.classList.add('input-invalido');
+        erro.textContent = 'Formato inválido. Use: propriedade: valor;';
+        erro.style.display = 'block';
+        return false;
+    }
+    
+    // Extrair propriedade e valor
+    const [prop, ...valores] = comando.split(':');
+    const propriedade = prop.trim().toLowerCase();
+    const valor = valores.join(':').replace(/;$/, '').trim();
+    
+    // Verificar se a propriedade é válida
+    if (!propriedadesValidas.hasOwnProperty(propriedade)) {
+        // Tentar converter camelCase para kebab-case
+        const propriedadeKebab = propriedade.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+        
+        if (!propriedadesValidas.hasOwnProperty(propriedadeKebab)) {
+            input.classList.add('input-invalido');
+            erro.textContent = `Propriedade "${propriedade}" não é válida para Flexbox`;
+            erro.style.display = 'block';
+            return false;
+        }
+    }
+    
+    // Verificar valores para propriedades com valores específicos
+    const propriedadeReal = propriedadesValidas.hasOwnProperty(propriedade) ? propriedade : propriedadeKebab;
+    
+    if (propriedadesValidas[propriedadeReal].length > 0 && 
+        !propriedadesValidas[propriedadeReal].includes(valor)) {
+        input.classList.add('input-invalido');
+        erro.textContent = `Valor "${valor}" inválido para ${propriedadeReal}. Valores aceitos: ${propriedadesValidas[propriedadeReal].join(', ')}`;
+        erro.style.display = 'block';
+        return false;
+    }
+    
+    // Validações específicas para certas propriedades
+    if (propriedadeReal === 'order' && isNaN(parseInt(valor))) {
+        input.classList.add('input-invalido');
+        erro.textContent = 'O valor de "order" deve ser um número inteiro';
+        erro.style.display = 'block';
+        return false;
+    }
+    
+    if ((propriedadeReal === 'flex-grow' || propriedadeReal === 'flex-shrink') && isNaN(parseFloat(valor))) {
+        input.classList.add('input-invalido');
+        erro.textContent = `O valor de "${propriedadeReal}" deve ser um número`;
+        erro.style.display = 'block';
+        return false;
+    }
+    
+    // Se passou por todas as validações
+    input.classList.add('input-valido');
+    return true;
+}
+
+document.getElementById('comando').addEventListener('input', function() {
+    if (this.value.trim() === '') {
+        this.classList.remove('input-invalido', 'input-valido');
+        document.getElementById('erro-sintaxe').style.display = 'none';
+    } else {
+        validarComandoFlexbox(this.value);
+    }
+});

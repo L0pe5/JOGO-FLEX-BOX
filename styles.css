@@ -265,3 +265,65 @@ input[type="text"]:focus {
 #blocos-container::-webkit-scrollbar-thumb:hover {
     background: #F4BC1D;
 }
+
+/* Estilos para o container de dicas */
+#dica-container {
+    background-color: rgba(244, 188, 29, 0.1);
+    border-left: 4px solid #F4BC1D;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 0 8px 8px 0;
+    text-align: left;
+}
+
+#dica-container h3 {
+    color: #F4BC1D;
+    margin-top: 0;
+    font-size: 1.1rem;
+}
+
+#texto-dica {
+    margin-bottom: 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+#toggle-dica {
+    background: transparent;
+    color: #F4BC1D;
+    border: 1px solid #F4BC1D;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+#toggle-dica:hover {
+    background: rgba(244, 188, 29, 0.1);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Estilos para validação */
+.input-invalido {
+    border-color: #e74c3c !important;
+    animation: shake 0.5s;
+}
+
+.input-valido {
+    border-color: #2ecc71 !important;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+
+#erro-sintaxe {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    display: none;
+}
