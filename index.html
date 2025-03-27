@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Quebra-Cabeça Flexbox</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="inicio" class="tela">
+        <h1>Bem-vindo ao Jogo de Quebra-Cabeça Flexbox</h1>
+        <button id="comecar">Começar Jogo</button>
+    </div>
+    
+    <div id="jogo" class="tela">
+        <h2 id="objetivo"></h2>
+        <div id="nivel-atual"></div>
+        <div id="blocos-container"></div>
+        
+        <input type="text" id="comando" placeholder="Digite um comando Flexbox">
+        <button id="aplicar-comando">Aplicar Comando</button>
+        
+        <div id="exemplo-comando" class="exemplo">Exemplo de comando: justify-content: center;</div> <!-- Exemplo de comando -->
+        
+        <button id="proximo-nivel" class="hidden">Próximo Nível</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
