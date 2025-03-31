@@ -327,3 +327,33 @@ input[type="text"]:focus {
     margin-top: 5px;
     display: none;
 }
+/* Estilo para a nova dica de aplicação */
+#dica-aplicacao {
+    background-color: rgba(244, 188, 29, 0.1);
+    padding: 8px;
+    border-radius: 4px;
+    margin: 10px 0;
+    border-left: 3px solid #F4BC1D;
+}
+
+#dica-aplicacao small {
+    color: #F4BC1D;
+    font-size: 0.9rem;
+}
+
+/* Melhorias no container de dicas principal */
+#dica-container {
+    background-color: rgba(244, 188, 29, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border-left: 4px solid #F4BC1D;
+    text-align: left;
+}
+
+#dica-container h3 {
+    color: #F4BC1D;
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}

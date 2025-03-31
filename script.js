@@ -154,9 +154,12 @@ let desafios = [
     },
     { 
         nivel: 25, 
-        objetivo: "Ajuste o tamanho dos blocos proporcionalmente.", 
-        flexProperties: { flex: '1' },
-        dica: "Controle de crescimento e redução em uma única propriedade"
+        objetivo: "Faça todos os blocos se expandirem igualmente", 
+        flexProperties: { 
+            target: 'items', // Indica que a propriedade é nos itens
+            properties: { flexGrow: '1' } // Verifica flex-grow nos blocos
+        },
+        dica: "Use uma propriedade que permita que os itens cresçam igualmente"
     },
     { 
         nivel: 26, 
@@ -277,57 +280,39 @@ function aplicarComando() {
 
     limparFeedback();
 
-    // Validar o comando antes de aplicar
-    if (!validarComandoFlexbox(comando)) {
-        return;
-    }
-
     try {
-        // Aplicar o comando
+        // Verifica se é nível que aplica em itens (nível 25)
+        const aplicarNosBlocos = desafio.flexProperties && 
+                               desafio.flexProperties.target === 'items';
+
         const propriedades = comando.split(';').filter(p => p.trim());
         
         propriedades.forEach(prop => {
             let [chave, valor] = prop.split(':').map(item => item.trim());
             if (chave && valor) {
-                // Remover ponto-e-vírgula final se existir
-                valor = valor.replace(/;$/, '');
+                chave = chave.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
                 
-                // Converter para camelCase se necessário
-                let chaveCamel = chave.includes('-') 
-                    ? chave.replace(/-([a-z])/g, (g) => g[1].toUpperCase())
-                    : chave;
-
-                // Determinar se é propriedade de item ou container
-                const propriedadesDeItem = [
-                    'order', 'flexGrow', 'flexShrink', 'flexBasis', 
-                    'flex', 'alignSelf'
-                ];
-                
-                if (propriedadesDeItem.includes(chaveCamel)) {
-                    // Aplicar a todos os blocos
+                if (aplicarNosBlocos) {
+                    // Aplica em todos os blocos
                     document.querySelectorAll('.bloco').forEach(bloco => {
-                        bloco.style[chaveCamel] = valor;
+                        bloco.style[chave] = valor;
                     });
                 } else {
-                    // Aplicar ao container
-                    blocosContainer.style[chaveCamel] = valor;
+                    // Aplica no container
+                    blocosContainer.style[chave] = valor;
                 }
             }
         });
 
-        // Verificar se o objetivo foi cumprido
         if (verificarObjetivo(blocosContainer, desafio)) {
             nivelCompleto = true;
-            mostrarFeedback('success', 'Parabéns! Você acertou!', 3000);
+            mostrarFeedback('success', '✅ Correto! Você acertou!', 3000);
             document.getElementById('proximo-nivel').classList.remove('hidden');
-            blocosContainer.classList.add('success-animation');
         } else {
-            mostrarFeedback('info', 'Comando aplicado com sucesso, mas não resolve o nível atual. Tente outro comando!', 3000);
-            document.getElementById('proximo-nivel').classList.add('hidden');
+            mostrarFeedback('info', '⚠️ Comando aplicado, mas não resolveu o nível. Tente outro!', 3000);
         }
     } catch (e) {
-        mostrarFeedback('error', `Erro ao aplicar o comando: ${e.message}`, 3000);
-        console.error(e);
+        mostrarFeedback('error', '❌ Erro: ' + e.message, 3000);
     }
 }
 
@@ -346,47 +331,31 @@ document.getElementById('proximo-nivel').addEventListener('click', () => {
 });
 
 function verificarObjetivo(blocosContainer, desafio) {
-    const estiloComputado = window.getComputedStyle(blocosContainer);
-    let todosItensCorretos = true;
-
-    // Verificar propriedades do container
-    for (let key in desafio.flexProperties) {
-        let estiloEsperado = desafio.flexProperties[key];
-        let estiloAplicado;
-
-        // Verifica se é propriedade de item (aplicada nos blocos)
-        if (['order', 'flexGrow', 'flexShrink', 'flexBasis', 'flex', 'alignSelf'].includes(key)) {
-            // Verifica em todos os blocos
-            const blocos = document.querySelectorAll('.bloco');
-            blocos.forEach(bloco => {
-                const estiloBloco = window.getComputedStyle(bloco);
-                estiloAplicado = bloco.style[key] || estiloBloco.getPropertyValue(
-                    key.replace(/([A-Z])/g, '-$1').toLowerCase()
-                );
-                
-                if (estiloAplicado != estiloEsperado) {
-                    todosItensCorretos = false;
-                }
-            });
-        } else {
-            // Propriedade do container
-            estiloAplicado = blocosContainer.style[key] || 
-                            estiloComputado.getPropertyValue(
-                                key.replace(/([A-Z])/g, '-$1').toLowerCase()
-                            );
-            
-            // Correção para valores vazios/null/undefined
-            if (estiloAplicado === '' || estiloAplicado === null || estiloAplicado === undefined) {
-                estiloAplicado = 'unset';
-            }
-
-            if (estiloAplicado != estiloEsperado) {
-                return false;
-            }
-        }
+    // Verificação para propriedades em itens (nível 25)
+    if (desafio.flexProperties && desafio.flexProperties.target === 'items') {
+        const blocos = document.querySelectorAll('.bloco');
+        return Array.from(blocos).every(bloco => {
+            const estilo = window.getComputedStyle(bloco);
+            return estilo.flexGrow === '1' || 
+                   estilo.flex === '1' || 
+                   estilo.flex === '1 1 0%';
+        });
     }
 
-    return todosItensCorretos;
+    // Verificação normal para outros níveis
+    const estiloComputado = window.getComputedStyle(blocosContainer);
+    for (let key in desafio.flexProperties) {
+        if (key === 'target' || key === 'properties') continue;
+        
+        let valorEsperado = desafio.flexProperties[key];
+        let valorAplicado = blocosContainer.style[key] || 
+                          estiloComputado.getPropertyValue(key.replace(/([A-Z])/g, '-$1').toLowerCase());
+        
+        if (valorAplicado !== valorEsperado) {
+            return false;
+        }
+    }
+    return true;
 }
 
 function mostrarFeedback(tipo, mensagem, tempo) {

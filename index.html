@@ -14,21 +14,29 @@
     
     <div id="jogo" class="tela">
         <h2 id="objetivo"></h2>
+        
+        <!-- Container de dicas principal -->
         <div id="dica-container" class="hidden">
-            <h3>Dica:</h3>
+            <h3>Dica do Nível <span id="numero-nivel"></span>:</h3>
             <p id="texto-dica"></p>
         </div>
+        
+        <!-- Nova div para dica de onde aplicar (container ou itens) -->
+        <div id="dica-aplicacao" class="hidden">
+            <small>Dica: <span id="texto-aplicacao"></span></small>
+        </div>
+        
         <div id="nivel-atual"></div>
         <div id="blocos-container"></div>
         
-        <input type="text" id="comando" placeholder="Digite um comando Flexbox">
-        <div id="erro-sintaxe"></div>
+        <input type="text" id="comando" placeholder="Digite um comando Flexbox (ex: justify-content: center)">
         <button id="aplicar-comando">Aplicar Comando</button>
         
-        <div id="exemplo-comando" class="exemplo">Exemplo de comando: justify-content: center;</div>
+        <!-- Exemplo apenas para primeiros níveis -->
+        <div id="exemplo-comando" class="exemplo hidden">Exemplo: justify-content: center;</div>
         
         <button id="proximo-nivel" class="hidden">Próximo Nível</button>
-        <button id="toggle-dica" class="hidden">Mostrar Dica</button>
+        <button id="toggle-dica">Mostrar Dica</button>
     </div>
 
     <script src="script.js"></script>
