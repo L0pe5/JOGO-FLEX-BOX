@@ -133,7 +133,7 @@ let desafios = [
     },
     { 
         nivel: 22, 
-        objetivo: "Aplique flex-basis para definir tamanhos iniciais.", 
+        objetivo: "Aplique flex-basis no tamanho 50px para definir tamanhos iniciais.", 
         flexProperties: { flexBasis: '50px' },
         dica: "Defina um tamanho base antes da distribuição de espaço"
     },
