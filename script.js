@@ -37,7 +37,7 @@ let desafios = [
     },
     { 
         nivel: 6, 
-        objetivo: "Inverta a ordem dos blocos.", 
+        objetivo: "Inverta a ordem dos blocos em coluna.", 
         flexProperties: { flexDirection: 'column-reverse' },
         dica: "Similar ao anterior, mas com a ordem invertida"
     },
@@ -181,15 +181,15 @@ let desafios = [
     },
     { 
         nivel: 29, 
-        objetivo: "Crie um layout responsivo com blocos de tamanho variável.", 
+        objetivo: "Desenvolva um layout onde os blocos se adaptam ao tamanho da tela, crescendo ou encolhendo conforme o espaço disponível, mas nunca ficando menores que 100px.", 
         flexProperties: { flex: '1 1 100px' },
-        dica: "Itens que se ajustam mas mantêm um tamanho mínimo"
+        dica: "Use a propriedade flex: 1 1 100px para que os itens sejam flexíveis, ocupem o espaço disponível de forma equilibrada, mas respeitem um tamanho mínimo de 100px para manter a usabilidade."
     },
     { 
         nivel: 30, 
-        objetivo: "Aplique todas as propriedades corretamente!", 
+        objetivo: "Crie um layout completo aplicando todas as principais propriedades do Flexbox para alinhar, distribuir e organizar itens de forma adaptável.", 
         flexProperties: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' },
-        dica: "Combine todas as técnicas essenciais em um layout completo"
+        dica: "Combine flex-direction, justify-content, align-items e flex-wrap para criar um layout robusto, centrado e responsivo."
     }
 ];
 
